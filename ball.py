@@ -29,30 +29,38 @@ from pyglet.gl import *
 
 
 class Ball(pyglet.sprite.Sprite):
+    
+    ball_file = 'ball.png'
+    
     def __init__(self, simulator, radius):
+        # Basic properties
         self.simulator = simulator
         self.radius = radius
         self.mass = math.pi * radius**2
         
-        pattern = pyglet.image.SolidColorImagePattern((255, 255, 255, 255))
+        # Image
+        ball_image = pyglet.resource.image(self.ball_file)
+        ball_image.anchor_x, ball_image.anchor_y = radius, radius
+        ball_image.width = ball_image.height = radius*2
+        
+        pyglet.sprite.Sprite.__init__(self, ball_image, batch=self.simulator.batch)
+        
+        # Velocity
+        self.vx = 300*random.random() - 150
+        self.vy = 300*random.random() - 150
  
-        image = pyglet.image.create(radius*2, radius*2, pattern)
-        image.anchor_x, image.anchor_y = radius, radius
- 
-        pyglet.sprite.Sprite.__init__(self, image, batch=self.simulator.batch)
- 
-        # reset ourselves
-        self.reset()
- 
-    def reset(self):
-        # place ourselves in the centre of the playing field
-        self.x, self.y = 400, 250
- 
-        # give ourselves a random direction within 45 degrees of either paddle
-        angle = random.random()*math.pi*2
-        # convert that direction into a velocity
-        self.vx, self.vy = math.cos(angle)*300, math.sin(angle)*300
-    
     def update(self, dt):
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
+        
+        # Detect collision with walls
+        
+        if self.x - self.radius <= 0: # Left wall
+            self.vx = self.vx * -1
+        elif self.x + self.radius >= self.simulator.window.width: # Right wall
+            self.vx = self.vx * -1
+        
+        if self.y - self.radius <= 0: # Bottom wall
+            self.vy = self.vy * -1
+        elif self.y + self.radius >= self.simulator.window.height: # Top wall
+            self.vy = self.vy * -1

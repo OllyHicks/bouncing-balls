@@ -29,10 +29,10 @@ import random
 import pyglet
 from simulator import *
 
-def main():
-    window = pyglet.window.Window(visible=False, caption="Draw")
+def main(fullscreen = True):
+    window = pyglet.window.Window(visible=False, caption="Collision", fullscreen=fullscreen)
     
-    sim = Simulator()
+    sim = Simulator(window)
     
     # clear the window and draw the scene
     @window.event
@@ -57,4 +57,4 @@ def main():
     return 0
 
 if __name__ == '__main__':
-	main()
+    main(False)
