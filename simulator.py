@@ -108,8 +108,6 @@ class Simulator:
                     return True
                     
         return False
-        
-    
 
     def detect_all_collisions(self):
         collisions = []
@@ -123,30 +121,19 @@ class Simulator:
         return collisions
     
     def simulat_ball_collision(self, ball_1, ball_2):
-        #ball_1.vx = ball_1.vy = 0
-        #ball_2.vx = ball_2.vy = 0
         
+        # Calculate the angle of the normal to collision
         normal_line = math.atan((ball_2.y - ball_1.y)/(1.0*(ball_2.x- ball_1.x)))
-        
-        print
-        print 'angle:', normal_line
-        print 'pos:', ball_1.x, ball_1.y
-        print 'vel (x,y):', ball_1.vx, ball_1.vy
-        
-        # Rotate direction
+                
+        # Rotate velocity vectors
         ball_1_vn = ball_1.vx * math.cos(-normal_line) - ball_1.vy * math.sin(-normal_line)
         ball_1_vt = ball_1.vy * math.cos(-normal_line) + ball_1.vx * math.sin(-normal_line)
         
         ball_2_vn = ball_2.vx * math.cos(-normal_line) - ball_2.vy * math.sin(-normal_line)
         ball_2_vt = ball_2.vy * math.cos(-normal_line) + ball_2.vx * math.sin(-normal_line)
-        
-        print 'vel (n,t):', ball_1_vn, ball_1_vt
-        print 
-        
-        # Do collision
-        #ball_1_vn = -1 * ball_1_vn
-        #ball_2_vn = -1 * ball_2_vn
-        ball_1_vn, ball_2_vn = ball_2_vn, ball_1_vn
+                
+        # Calculate velocities
+        ball_1_vn, ball_2_vn = self.calculate_collision((ball_1_vn, ball_1.mass), (ball_2_vn, ball_2.mass))
         
         # Rotate back
         ball_1.vx = ball_1_vn * math.cos(normal_line) - ball_1_vt * math.sin(normal_line)
@@ -155,4 +142,11 @@ class Simulator:
         ball_2.vx = ball_2_vn * math.cos(normal_line) - ball_2_vt * math.sin(normal_line)
         ball_2.vy = ball_2_vt * math.cos(normal_line) + ball_2_vn * math.sin(normal_line)
 
-        #pyglet.clock.unschedule(self.update)
+    
+    def calculate_collision(self, ball_1, ball_2):
+        ball_1_vel, ball_1_mass = ball_1
+        ball_2_vel, ball_2_mass = ball_2
+        
+        ball_1_vel, ball_2_vel = ball_2_vel, ball_1_vel
+        
+        return ball_1_vel, ball_2_vel
