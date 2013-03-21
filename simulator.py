@@ -34,7 +34,7 @@ from ball import *
 
 class Simulator:
     
-    num_balls = 8
+    num_balls = 3
     dist_matrix = []
     
     _prev_collisions = []
@@ -42,6 +42,14 @@ class Simulator:
     def __init__(self, window):
         self.batch = pyglet.graphics.Batch()
         self.window = window
+        
+        self.balls = [
+            Ball(self, 100, 200, 200),
+            Ball(self, 50, 400, 400),
+            Ball(self, 20, 30, 30)
+        ]
+        
+        return 
         
         
         max_radius = 100
@@ -120,14 +128,20 @@ class Simulator:
         
         normal_line = math.atan((ball_2.y - ball_1.y)/(1.0*(ball_2.x- ball_1.x)))
         
-        print normal_line
+        print
+        print 'angle:', normal_line
+        print 'pos:', ball_1.x, ball_1.y
+        print 'vel (x,y):', ball_1.vx, ball_1.vy
         
         # Rotate direction
-        ball_1_vn = ball_1.vx * math.cos(normal_line) - ball_1.vy * math.sin(normal_line)
-        ball_1_vt = ball_1.vy * math.cos(normal_line) + ball_1.vx * math.sin(normal_line)
+        ball_1_vn = ball_1.vx * math.cos(-normal_line) - ball_1.vy * math.sin(-normal_line)
+        ball_1_vt = ball_1.vy * math.cos(-normal_line) + ball_1.vx * math.sin(-normal_line)
         
-        ball_2_vn = ball_2.vx * math.cos(normal_line) - ball_2.vy * math.sin(normal_line)
-        ball_2_vt = ball_2.vy * math.cos(normal_line) + ball_2.vx * math.sin(normal_line)
+        ball_2_vn = ball_2.vx * math.cos(-normal_line) - ball_2.vy * math.sin(-normal_line)
+        ball_2_vt = ball_2.vy * math.cos(-normal_line) + ball_2.vx * math.sin(-normal_line)
+        
+        print 'vel (n,t):', ball_1_vn, ball_1_vt
+        print 
         
         # Do collision
         #ball_1_vn = -1 * ball_1_vn
@@ -135,8 +149,10 @@ class Simulator:
         ball_1_vn, ball_2_vn = ball_2_vn, ball_1_vn
         
         # Rotate back
-        ball_1.vx = ball_1_vn * math.cos(-normal_line) - ball_1_vt * math.sin(-normal_line)
-        ball_1.vy = ball_1_vt * math.cos(-normal_line) + ball_1_vn * math.sin(-normal_line)
+        ball_1.vx = ball_1_vn * math.cos(normal_line) - ball_1_vt * math.sin(normal_line)
+        ball_1.vy = ball_1_vt * math.cos(normal_line) + ball_1_vn * math.sin(normal_line)
         
-        ball_2.vx = ball_2_vn * math.cos(-normal_line) - ball_2_vt * math.sin(-normal_line)
-        ball_2.vy = ball_2_vt * math.cos(-normal_line) + ball_2_vn * math.sin(-normal_line)
+        ball_2.vx = ball_2_vn * math.cos(normal_line) - ball_2_vt * math.sin(normal_line)
+        ball_2.vy = ball_2_vt * math.cos(normal_line) + ball_2_vn * math.sin(normal_line)
+
+        #pyglet.clock.unschedule(self.update)

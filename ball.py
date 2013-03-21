@@ -32,7 +32,7 @@ class Ball(pyglet.sprite.Sprite):
     
     ball_file = 'ball.png'
     
-    def __init__(self, simulator, radius):
+    def __init__(self, simulator, radius, x=None, y=None):
         # Basic properties
         self.simulator = simulator
         self.radius = radius
@@ -51,6 +51,12 @@ class Ball(pyglet.sprite.Sprite):
         # Velocity
         self.vx = 300*random.random() - 150
         self.vy = 300*random.random() - 150
+        
+        # Position
+        if not x == None:
+			self.x = x
+        if not y == None:
+			self.y = y
  
     def update(self, dt):
         self.x = self.x + self.vx * dt
