@@ -40,10 +40,13 @@ class Ball(pyglet.sprite.Sprite):
         
         # Image
         ball_image = pyglet.resource.image(self.ball_file)
-        ball_image.anchor_x, ball_image.anchor_y = radius, radius
-        ball_image.width = ball_image.height = radius*2
-        
+        ball_image.anchor_x = ball_image.anchor_y = ball_image.width * 0.5
+		
+		# Init sprite
         pyglet.sprite.Sprite.__init__(self, ball_image, batch=self.simulator.batch)
+        
+        # Scale image
+        self.scale = 2*self.radius / (ball_image.width * 1.0)
         
         # Velocity
         self.vx = 300*random.random() - 150

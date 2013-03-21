@@ -44,7 +44,7 @@ class Simulator:
         self.window = window
         
         
-        max_radius = 20
+        max_radius = 100
         
         fitted = False
         while fitted == False:
@@ -52,7 +52,6 @@ class Simulator:
             for n in range(0, self.num_balls):
                 radius = int(max_radius * 0.8 *random.random() + max_radius * 0.2)
                 
-                radius = max_radius
                 ball = Ball(self, radius)
                 
                 for i in range(100):
