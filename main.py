@@ -30,8 +30,11 @@ import pyglet
 from simulator import *
 
 def main(fullscreen = True):
-    window = pyglet.window.Window(visible=False, caption="Collision", fullscreen=fullscreen)
-    
+    if fullscreen:
+        window = pyglet.window.Window(fullscreen=True)
+    else:
+        window = pyglet.window.Window(visible=False, caption="Collision")
+        
     sim = Simulator(window)
     
     # clear the window and draw the scene
@@ -57,4 +60,4 @@ def main(fullscreen = True):
     return 0
 
 if __name__ == '__main__':
-    main(False)
+    main(True)
