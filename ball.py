@@ -42,7 +42,7 @@ class Ball(pyglet.sprite.Sprite):
         self.colour = random.choice(self.colours)
         
         # Image
-        ball_image = pyglet.resource.image(self.colour+'.png')
+        ball_image = pyglet.resource.image('balls/'+self.colour+'.png')
         ball_image.anchor_x = ball_image.anchor_y = ball_image.width * 0.5
         
         # Init sprite
