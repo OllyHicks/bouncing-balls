@@ -32,6 +32,7 @@ from simulator import *
 def main(fullscreen = True):
     if fullscreen:
         window = pyglet.window.Window(fullscreen=True)
+        window.set_mouse_visible(False)
     else:
         window = pyglet.window.Window(visible=False, caption="Collision")
         
@@ -43,6 +44,17 @@ def main(fullscreen = True):
         window.clear()
         
         sim.batch.draw()
+        
+    @window.event
+    def on_key_press(symbol, modifiers):
+        pyglet.app.exit()
+    
+    @window.event
+    def on_mouse_motion(x, y, dx, dy):
+        pyglet.app.exit()
+        
+    def on_mouse_press(x, y, button, modifiers):
+        pyglet.app.exit()
     
     # schedule the update function, 60 times per second
     pyglet.clock.schedule_interval(sim.update, 1.0/60.0)
