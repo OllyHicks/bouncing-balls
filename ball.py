@@ -66,10 +66,14 @@ class Ball(pyglet.sprite.Sprite):
         
         if self.x - self.radius <= 0: # Left wall
             self.vx = self.vx * -1
+            self.x = self.radius
         elif self.x + self.radius >= self.simulator.window.width: # Right wall
             self.vx = self.vx * -1
+            self.x = self.simulator.window.width - self.radius
         
         if self.y - self.radius <= 0: # Bottom wall
             self.vy = self.vy * -1
+            self.y = self.radius
         elif self.y + self.radius >= self.simulator.window.height: # Top wall
             self.vy = self.vy * -1
+            self.y = self.simulator.window.height - self.radius
