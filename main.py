@@ -33,15 +33,16 @@ import pyglet
 from simulator import *
 
 def main(fullscreen = True):
+    config = pyglet.gl.Config(sample_buffers=1, samples=4)
     
     screenshot = None
     
     if fullscreen:
         screenshot = get_screenshot()
-        window = pyglet.window.Window(fullscreen=True)
+        window = pyglet.window.Window(fullscreen=True, config=config)
         window.set_mouse_visible(False)
     else:
-        window = pyglet.window.Window(visible=False, caption="Collision")
+        window = pyglet.window.Window(visible=False, caption="Collision", config=config)
         
     sim = Simulator(window)
     
