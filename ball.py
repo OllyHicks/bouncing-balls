@@ -93,7 +93,7 @@ class Ball(pyglet.sprite.Sprite):
             
             self.y = self.simulator.window.height - self.radius
 
-    def set_friction_rotation(self, vel, coeff=0.5):
+    def set_friction_rotation(self, vel, coeff=0.2):
         vel = vel * coeff
         self.va = -vel / self.radius * 360 / 2*math.pi
         return self.va
