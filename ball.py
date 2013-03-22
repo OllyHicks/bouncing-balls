@@ -33,7 +33,7 @@ class Ball(pyglet.sprite.Sprite):
     colours = ('red', 'green', 'blue', 'sky', 'yellow', 'purple', 'orange', 'pink')
     
     def __init__(self, simulator, radius, x=None, y=None):
-		# Basic properties
+        # Basic properties
         self.simulator = simulator
         self.radius = radius
         self.mass = math.pi * radius**2
@@ -44,8 +44,8 @@ class Ball(pyglet.sprite.Sprite):
         # Image
         ball_image = pyglet.resource.image(self.colour+'.png')
         ball_image.anchor_x = ball_image.anchor_y = ball_image.width * 0.5
-		
-		# Init sprite
+        
+        # Init sprite
         pyglet.sprite.Sprite.__init__(self, ball_image, batch=self.simulator.batch)
         
         # Scale image
@@ -54,29 +54,49 @@ class Ball(pyglet.sprite.Sprite):
         # Velocity
         self.vx = 300*random.random() - 150
         self.vy = 300*random.random() - 150
+        self.va = 0 # Degrees / Sec
         
         # Position
         if not x == None:
-			self.x = x
+            self.x = x
         if not y == None:
-			self.y = y
+            self.y = y
+        
+        # Rotation
+        self.rotation = int(360 * random.random())
  
     def update(self, dt):
         self.x = self.x + self.vx * dt
         self.y = self.y + self.vy * dt
+        self.rotation = int(self.rotation + self.va * dt)%360
         
         # Detect collision with walls
-        
         if self.x - self.radius <= 0: # Left wall
             self.vx = self.vx * -1
+            self.set_friction_rotation(self.vy)
+            
             self.x = self.radius
+            
         elif self.x + self.radius >= self.simulator.window.width: # Right wall
             self.vx = self.vx * -1
+            self.set_friction_rotation(-self.vy)
+            
             self.x = self.simulator.window.width - self.radius
-        
+            
         if self.y - self.radius <= 0: # Bottom wall
             self.vy = self.vy * -1
+            self.set_friction_rotation(-self.vx)
+            
             self.y = self.radius
+            
         elif self.y + self.radius >= self.simulator.window.height: # Top wall
             self.vy = self.vy * -1
+            self.set_friction_rotation(self.vx)
+            
             self.y = self.simulator.window.height - self.radius
+
+    def set_friction_rotation(self, vel, coeff=0.5):
+        vel = vel * coeff
+        self.va = -vel / self.radius * 360 / 2*math.pi
+        return self.va
+        

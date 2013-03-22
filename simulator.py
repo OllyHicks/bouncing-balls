@@ -34,7 +34,7 @@ from ball import *
 
 class Simulator:
     
-    num_balls = 100
+    num_balls = 40
     dist_matrix = []
     
     _prev_collisions = []
@@ -43,7 +43,7 @@ class Simulator:
         self.batch = pyglet.graphics.Batch()
         self.window = window
         
-        max_radius = 20
+        max_radius = 50
         
         fitted = False
         while fitted == False:
@@ -125,6 +125,8 @@ class Simulator:
                 
         # Calculate velocities
         ball_1_vn, ball_2_vn = self.calculate_collision((ball_1_vn, ball_1.mass), (ball_2_vn, ball_2.mass))
+        ball_1.set_friction_rotation(ball_1_vt)
+        ball_2.set_friction_rotation(ball_2_vt)
         
         # Rotate back
         ball_1.vx = ball_1_vn * math.cos(normal_line) - ball_1_vt * math.sin(normal_line)
