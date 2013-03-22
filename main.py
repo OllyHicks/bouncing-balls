@@ -25,12 +25,19 @@
 
 import math
 import random
+
+import subprocess
+import tempfile
  
 import pyglet
 from simulator import *
 
 def main(fullscreen = True):
+    
+    screenshot = None
+    
     if fullscreen:
+        screenshot = get_screenshot()
         window = pyglet.window.Window(fullscreen=True)
         window.set_mouse_visible(False)
     else:
@@ -42,7 +49,8 @@ def main(fullscreen = True):
     @window.event
     def on_draw():
         window.clear()
-        
+        if not screenshot == None:
+            screenshot.blit(0, 0)
         sim.batch.draw()
         
     @window.event
@@ -70,6 +78,11 @@ def main(fullscreen = True):
     pyglet.app.run()
     
     return 0
+
+def get_screenshot():
+    handle, path = tempfile.mkstemp('.png')
+    subprocess.call(['import', '-window',  'root', path])
+    return pyglet.image.load(path)
 
 if __name__ == '__main__':
     main(True)
