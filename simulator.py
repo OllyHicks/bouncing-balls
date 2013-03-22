@@ -144,9 +144,11 @@ class Simulator:
 
     
     def calculate_collision(self, ball_1, ball_2):
-        ball_1_vel, ball_1_mass = ball_1
-        ball_2_vel, ball_2_mass = ball_2
+        u_1, m_1 = ball_1
+        u_2, m_2 = ball_2
         
-        ball_1_vel, ball_2_vel = ball_2_vel, ball_1_vel
         
-        return ball_1_vel, ball_2_vel
+        v_1 = ((m_1-m_2)*u_1 + 2*m_2*u_2) / ((m_1+m_2)*1.0)
+        v_2 = (2*m_1*u_1 + (m_2-m_1)*u_2) / ((m_1+m_2)*1.0)
+        
+        return v_1, v_2
