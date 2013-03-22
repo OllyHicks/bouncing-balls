@@ -32,6 +32,8 @@ import tempfile
 import pyglet
 from simulator import *
 
+import sys
+
 def main(fullscreen = True):
     config = pyglet.gl.Config(sample_buffers=1, samples=4)
     
@@ -86,4 +88,12 @@ def get_screenshot():
     return pyglet.image.load(path)
 
 if __name__ == '__main__':
-    main(True)
+    fullscreen = True
+    if len(sys.argv) > 1:
+        if sys.argv[1] == '-h' or sys.argv[1] == '--help':
+            print 'usage: '+sys.argv[0]+' [window]'
+            sys.exit()
+        elif sys.argv[1] == 'window':
+            fullscreen = False
+        
+    main(fullscreen)
