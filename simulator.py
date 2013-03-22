@@ -34,7 +34,7 @@ from ball import *
 
 class Simulator:
     
-    num_balls = 3
+    num_balls = 12
     dist_matrix = []
     
     _prev_collisions = []
@@ -42,15 +42,6 @@ class Simulator:
     def __init__(self, window):
         self.batch = pyglet.graphics.Batch()
         self.window = window
-        
-        self.balls = [
-            Ball(self, 100, 200, 200),
-            Ball(self, 50, 400, 400),
-            Ball(self, 20, 30, 30)
-        ]
-        
-        return 
-        
         
         max_radius = 100
         
