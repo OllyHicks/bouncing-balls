@@ -3,7 +3,7 @@
 #
 #  simulator.py
 #  
-#  Copyright 2013 Olly Hicks <olly@olly-laptop>
+#  Copyright 2013 Olly Hicks <me@ollyhicks.co.uk>
 #  
 #  This program is free software; you can redistribute it and/or modify
 #  it under the terms of the GNU General Public License as published by
