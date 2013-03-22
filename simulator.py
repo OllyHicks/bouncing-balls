@@ -32,26 +32,44 @@ from pyglet.gl import *
 
 from ball import *
 
+import glob
+
 class Simulator:
     
     num_balls = 40
+    max_radius = 50
     dist_matrix = []
     
     _prev_collisions = []
     
-    def __init__(self, window):
+    image_directory = 'balls'
+    
+    def __init__(self, window, image_directory=None, num_balls=None, max_radius=None):
+        # Images
+        if not image_directory == None:
+            self.image_directory = image_directory
+        
+        images = glob.glob(self.image_directory+'/*.png')
+        
+        # Balls
+        if not num_balls == None:
+            self.num_balls = num_balls
+            
+        if not max_radius == None:
+            self.max_radius = max_radius
+        
+        
+        
         self.batch = pyglet.graphics.Batch()
         self.window = window
-        
-        max_radius = 50
         
         fitted = False
         while fitted == False:
             self.balls = []
             for n in range(0, self.num_balls):
-                radius = int(max_radius * 0.8 *random.random() + max_radius * 0.2)
+                radius = int(self.max_radius * 0.8 *random.random() + self.max_radius * 0.2)
                 
-                ball = Ball(self, radius)
+                ball = Ball(self, radius, random.choice(images))
                 
                 for i in range(100):
                     ball.x = int(radius + (self.window.width - 2 * radius) * random.random())
@@ -67,9 +85,9 @@ class Simulator:
                 else:
                     break
             
-            if max_radius <= 10:
+            if self.max_radius <= 10:
                 raise Exception('Two many balls, not enough space')
-            max_radius = int(max_radius * 0.8)
+            self.max_radius = int(self.max_radius * 0.8)
             
                 
     def update(self, dt):

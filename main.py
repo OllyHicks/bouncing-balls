@@ -33,20 +33,19 @@ import pyglet
 from simulator import *
 
 import sys
+import argparse
 
-def main(fullscreen = True):
-    config = pyglet.gl.Config(sample_buffers=1, samples=4)
-    
+def main(fullscreen = True, image_directory=None, num_balls=None, max_radius=None):
     screenshot = None
     
     if fullscreen:
         screenshot = get_screenshot()
-        window = pyglet.window.Window(fullscreen=True, config=config)
+        window = pyglet.window.Window(fullscreen=True)
         window.set_mouse_visible(False)
     else:
-        window = pyglet.window.Window(visible=False, caption="Collision", config=config)
+        window = pyglet.window.Window(visible=False, caption="Collision")
         
-    sim = Simulator(window)
+    sim = Simulator(window, image_directory, num_balls, max_radius)
     
     # clear the window and draw the scene
     @window.event
@@ -55,17 +54,18 @@ def main(fullscreen = True):
         if not screenshot == None:
             screenshot.blit(0, 0)
         sim.batch.draw()
-        
-    @window.event
-    def on_key_press(symbol, modifiers):
-        pyglet.app.exit()
     
-    @window.event
-    def on_mouse_motion(x, y, dx, dy):
-        pyglet.app.exit()
+    if fullscreen:
+        @window.event
+        def on_key_press(symbol, modifiers):
+            pyglet.app.exit()
         
-    def on_mouse_press(x, y, button, modifiers):
-        pyglet.app.exit()
+        @window.event
+        def on_mouse_motion(x, y, dx, dy):
+            pyglet.app.exit()
+            
+        def on_mouse_press(x, y, button, modifiers):
+            pyglet.app.exit()
     
     # schedule the update function, 60 times per second
     pyglet.clock.schedule_interval(sim.update, 1.0/60.0)
@@ -88,12 +88,20 @@ def get_screenshot():
     return pyglet.image.load(path)
 
 if __name__ == '__main__':
-    fullscreen = True
-    if len(sys.argv) > 1:
-        if sys.argv[1] == '-h' or sys.argv[1] == '--help':
-            print 'usage: '+sys.argv[0]+' [window]'
-            sys.exit()
-        elif sys.argv[1] == 'window':
-            fullscreen = False
-        
-    main(fullscreen)
+    parser = argparse.ArgumentParser(description='Simulate the elastic collision of balls.')
+    
+    parser.add_argument('--windowed', action='store_true', default=False,
+                       help='Run the simulation in a window rather than fullscreen')
+                       
+    parser.add_argument('--images', type=str, default='balls',
+                       help='Directory of the images for the balls')
+                       
+    parser.add_argument('--num_balls', type=int, default=40,
+                       help='Directory of the images for the balls')
+                       
+    parser.add_argument('--max_radius', type=int, default=50,
+                       help='Maximum radius of the balls')
+
+    args = parser.parse_args()
+    
+    main(not args.windowed, args.images, args.num_balls, args.max_radius)

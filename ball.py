@@ -29,20 +29,18 @@ from pyglet.gl import *
 
 
 class Ball(pyglet.sprite.Sprite):
-    
-    colours = ('red', 'green', 'blue', 'sky', 'yellow', 'purple', 'orange', 'pink')
-    
-    def __init__(self, simulator, radius, x=None, y=None):
+	
+    def __init__(self, simulator, radius, image_file, x=None, y=None, image_files=None):
         # Basic properties
         self.simulator = simulator
         self.radius = radius
         self.mass = math.pi * radius**2
         
-        # Colour
-        self.colour = random.choice(self.colours)
+        # Image
+        self.image_file = image_file
         
         # Image
-        ball_image = pyglet.resource.image('balls/'+self.colour+'.png')
+        ball_image = pyglet.resource.image(self.image_file)
         ball_image.anchor_x = ball_image.anchor_y = ball_image.width * 0.5
         
         # Init sprite
