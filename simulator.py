@@ -34,7 +34,7 @@ from ball import *
 
 class Simulator:
     
-    num_balls = 12
+    num_balls = 100
     dist_matrix = []
     
     _prev_collisions = []
@@ -43,7 +43,7 @@ class Simulator:
         self.batch = pyglet.graphics.Batch()
         self.window = window
         
-        max_radius = 100
+        max_radius = 20
         
         fitted = False
         while fitted == False:
